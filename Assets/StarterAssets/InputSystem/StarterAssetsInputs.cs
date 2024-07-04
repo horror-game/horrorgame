@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -12,6 +14,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public bool jab;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -43,10 +46,17 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+        public void OnJab(InputValue value) 
+        {
+            JabInput(value.isPressed);
+        }
+
+       
+
 #endif
 
 
-		public void MoveInput(Vector2 newMoveDirection)
+        public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
 		} 
@@ -75,6 +85,16 @@ namespace StarterAssets
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
-	}
+        public void JabInput(bool newJab) // 新しい入力メソッド
+        {
+            jab = newJab;
+        }
+
+        private void Update()
+        {
+            // マウスの左ボタンを押したときにパンチ入力を設定
+            jab = Mouse.current.leftButton.isPressed;
+        }
+    }
 	
 }
